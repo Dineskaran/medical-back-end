@@ -6,7 +6,7 @@ class nurse_duty_request:
     id= None
     date = None
     time = None
-    person_details = None
+    person_details_id = None
     person_type = None
     duty_option = None
     status = None
@@ -24,8 +24,8 @@ class nurse_duty_request:
         if 'time' in object:
             self.time = object['time']
         
-        if 'person_details' in object:
-            self.person_details = object['person_details']
+        if 'person_details_id' in object:
+            self.person_details_id = object['person_details_id']
         
         if 'person_type' in object:
             self.person_type = object['person_type']
@@ -49,8 +49,8 @@ class nurse_duty_request:
     def get_time(self):
         return self.time
 
-    def get_person_details(self):
-        return self.person_details
+    def get_person_details_id(self):
+        return self.person_details_id
 
     def get_person_type(self):
         return self.person_type

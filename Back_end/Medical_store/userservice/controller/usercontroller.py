@@ -50,7 +50,6 @@ def retrify_home_admission(request):
     if request.method=="DELETE":
         service=home_admission_service()
         id=request.GET.get("id")
-        
         response=service.delete_home_admission(id)
         return HttpResponse(response.get(),content_type='application/json')
 

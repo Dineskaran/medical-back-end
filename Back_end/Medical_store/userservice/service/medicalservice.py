@@ -7,7 +7,7 @@ import datetime
 
 from userservice.data.response.userresponse import  response_home_admission ,dropdown_response
 from userservice.data.request.userrequest import home_admission_request
-from userservice.models import home_admission, dropdown_table
+from userservice.models import home_admission, dropdown_table, person_details
 
 
 # from userservice.utls.medicalutlls import utlis
@@ -39,21 +39,22 @@ class home_admission_service:
         else:
             # (obj = home_admission  (goods_main model table name))
             obj = home_admission(
-            disease =object.get_disease(),
-            person_details_id=object.get_person_details(),
-            room_no=object.get_room_no(),
-            admission_date=object.get_admission_date(),  
-            given_things=object.get_given_things(),
-            hospital_name=object.get_hospital_name(),
-            bed_source_image=object.get_bed_source_image(),
-            able_to_act_independently=object.get_able_to_act_independently(),
-            toilet_managing=object.get_toilet_managing(),
-            urine_managing=object.get_urine_managing(),
-            work_in_uyirilai=object.get_work_in_uyirilai(),
-            discharge_date=object.get_discharge_date(),            
-            discharge_reason=object.get_discharge_reason(),
-            note=object.get_note())
+                disease =object.get_disease(),
+                person_details_id=object.get_person_details(),
+                room_no=object.get_room_no(),
+                admission_date=object.get_admission_date(),  
+                given_things=object.get_given_things(),
+                hospital_name=object.get_hospital_name(),
+                bed_source_image=object.get_bed_source_image(),
+                able_to_act_independently=object.get_able_to_act_independently(),
+                toilet_managing=object.get_toilet_managing(),
+                urine_managing=object.get_urine_managing(),
+                work_in_uyirilai=object.get_work_in_uyirilai(),
+                discharge_date=object.get_discharge_date(),            
+                discharge_reason=object.get_discharge_reason(),
+                note=object.get_note())
             obj.save()
+            personObj=person_details.objects.filter(id=obj.person_details_id).update(person_type="Home Member")                               
 
         response = response_home_admission()
         response.set_id(obj.id)

@@ -1,6 +1,6 @@
 from django.db import models
 import datetime
-from django.utils.timezone import now
+# from django.utils.timezone import datenow
 
 
 
@@ -133,7 +133,7 @@ class home_admission(models.Model):
 # 07. NurseDuty table model
 
 class nurse_duty(models.Model):
-    date=models.DateTimeField(null=True)
+    date=models.DateField(null=True)
     time=models.TimeField(null=True)
     person_details=models.ForeignKey("person_details", on_delete=models.CASCADE)
     person_type=models.CharField(max_length=45,null=True)
@@ -153,7 +153,7 @@ class user_details(models.Model):
     user_id=models.CharField(max_length=30,null=True)
     password=models.CharField(max_length=255,null=True)
     privilege=models.CharField(max_length=120,null=True)
-    create_date=models.DateField(default=now)
+    create_date=models.DateTimeField(default=datetime.datetime.now())
     create_by=models.CharField(max_length=15,null=True)
     status=models.IntegerField(default=1)
     
@@ -167,8 +167,8 @@ class user_details(models.Model):
 class login_info(models.Model):
 
     user_details=models.ForeignKey("user_details",on_delete=models.CASCADE)
-    log_date=models.DateTimeField(default=now)
-    log_time=models.TimeField(null=True)
+    log_date=models.DateTimeField(default=datetime.datetime.now())
+    log_time=models.DateTimeField(null=True)
     location=models.CharField(max_length=255)
     log_out_time=models.TimeField(null=True)
     num_of_attempt=models.TimeField(null=True) 
