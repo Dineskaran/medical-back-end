@@ -113,16 +113,17 @@ class home_admission(models.Model):
     admission_date=models.DateField(null=True)
     room_no=models.CharField(max_length=15,null=True)
     given_things=models.CharField(max_length=120,null=True)
-    is_go_clinic=models.SmallIntegerField(default=0,null=True)
+    is_go_clinic= models.SmallIntegerField(default=0,null=True)
     hospital_name=models.CharField(max_length=255,null=True)
-    bed_source_image=models.CharField(max_length=200,null=True)
-    able_to_act_independently=models.SmallIntegerField(default=0,null=True)
+    # bed_source_image=models.CharField(max_length=200,null=True) seperate table
+    bed_sores_status = models.CharField(max_length=255,null=True)   # drop down  
+    act_independently=models.SmallIntegerField(default=0,null=True) # check box
     toilet_managing=models.CharField(max_length=255,null=True)
     urine_managing=models.CharField(max_length=255,null=True)
     work_in_uyirilai=models.CharField(max_length=75,null=True)
     discharge_date=models.DateField(null=True)
     discharge_reason=models.CharField(max_length=120,null=True)
-    note=models.CharField(max_length=150,null=True)
+    note=models.CharField(max_length=250,null=True)
     status=models.IntegerField(default=1)
     
     class Meta:
@@ -149,6 +150,7 @@ class nurse_duty(models.Model):
 # 08. User Details table model
 
 class user_details(models.Model):
+    
     user_name=models.CharField(max_length=30,null=True)
     user_id=models.CharField(max_length=30,null=True)
     password=models.CharField(max_length=255,null=True)
@@ -171,7 +173,7 @@ class login_info(models.Model):
     log_time=models.DateTimeField(null=True)
     location=models.CharField(max_length=255)
     log_out_time=models.TimeField(null=True)
-    num_of_attempt=models.TimeField(null=True) 
+    num_of_attempt=models.TimeField(null=True)
     log_status=models.IntegerField(null=True)
     status=models.IntegerField(default=1)
     

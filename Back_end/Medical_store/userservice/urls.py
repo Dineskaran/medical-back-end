@@ -1,12 +1,26 @@
 from django.urls import path
 from . import views
-from userservice.controller import usercontroller,nursedutycontroller
+from userservice.controller import usercontroller,nursedutycontroller,userdetailscontroller
+from userservice.controller import personcontroller
+from userservice.controller import logininfocontroller
+
 
 urlpatterns=[
     path('home_admission_insert',usercontroller.insert_homeadmission),
-    path('drop_down_',usercontroller.drop_down),
     path('delete',usercontroller.retrify_home_admission),
+    
+    path('get_drop_down',usercontroller.drop_down),
+    
     path('insert_nurse_duty',nursedutycontroller.insert_nurse_duty_details),
     path('delete_nurse_duty_details',nursedutycontroller.delete_nurse_duty_details,name="delete_nurse_duty_details"),
+    
+    path('insert_prson_details',personcontroller.insert_prson_details,name="insert_prson_details"),
+    path('delete_prson_details',personcontroller.delete_person_details,name="delete_person_details"),
+    
+    path('insert_user_details',userdetailscontroller.insert_user,name="insert_user_details"),
+    path('delete_user_details',userdetailscontroller.manage_user,name="delete_user_details"),
+    
+    path('insert_log_details',logininfocontroller.insert_log_entry,name="insert_log_details"),
+    path('delete_log_details',logininfocontroller.delete_log_details,name="delete_log_details"),
    
 ]

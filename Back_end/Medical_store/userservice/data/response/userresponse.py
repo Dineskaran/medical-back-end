@@ -1,12 +1,12 @@
 import json
-import datetime
+
 
 #  06. Home Admission Response Part
 
 class response_home_admission:
     
    
-    person_details = None
+    person_details_id = None
     id=None
     if_new=None
     disease=None
@@ -15,8 +15,8 @@ class response_home_admission:
     given_things=None
     is_go_clinic=None
     hospital_name=None
-    bed_source_image=None
-    able_to_act_independently=None
+    bed_sores_status=None
+    act_independently=None
     toilet_managing=None
     urine_managing=None
     work_in_uyirilai=None
@@ -32,8 +32,8 @@ class response_home_admission:
     def set_id(self,id):
         self.id=id
 
-    def set_person_details(self, person_details):
-        self.person_details=person_details
+    def set_person_details_id(self, person_details_id):
+        self.person_details_id=person_details_id
 
     def set_if_new(self, if_new):
         self.if_new=if_new
@@ -41,7 +41,7 @@ class response_home_admission:
     def set_disease(self, disease):
         self.disease=disease
 
-    def set_admission_date(self, admission_date):
+    def set_admission_date(self,admission_date):
         self.admission_date=admission_date
 
     def set_room_no(self, room_no):
@@ -56,11 +56,11 @@ class response_home_admission:
     def set_hospital_name(self, hospital_name):
         self.hospital_name=hospital_name
 
-    def set_bed_source_image(self, bed_source_image):
-        self.bed_source_image=bed_source_image
+    def set_bed_sores_status(self, bed_sores_status):
+        self.bed_sores_status=bed_sores_status
 
-    def set_able_to_act_independently(self, able_to_act_independently):
-        self.able_to_act_independently=able_to_act_independently
+    def set_act_independently(self, act_independently):
+        self.act_independently=act_independently
 
     def set_toilet_managing(self, toilet_managing):
         self.toilet_managing=toilet_managing

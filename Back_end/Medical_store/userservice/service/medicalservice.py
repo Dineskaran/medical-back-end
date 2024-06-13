@@ -16,79 +16,89 @@ from userservice.models import home_admission, dropdown_table, person_details
 class home_admission_service:
     
     def insert_home_admission(self, object):
-        print(object)
         if object.get_id() is not None and object.get_id() != 0:
-              # obj = home_admission  (goods_main model table name)
-            obj1 = home_admission.objects.filter(id=object.get_id()).update(
-                disease=object.get_disease(),                                                          
-                person_details_id=object.get_person_details(),
-                room_no=object.get_room_no(),
-                given_things=object.get_given_things(),
-                hospital_name=object.get_hospital_name(),
-                bed_source_image=object.get_bed_source_image(),
-                able_to_act_independently=object.get_able_to_act_independently(),
-                toilet_managing=object.get_toilet_managing(),
-                urine_managing=object.get_urine_managing(),
-                work_in_uyirilai=object.get_work_in_uyirilai(),
-                discharge_date=object.get_discharge_date(),            
-                discharge_reason=object.get_discharge_reason(),
-                note=object.get_note())
+            # obj = home_admission  (goods_main model table name)
+            obj = home_admission.objects.get(id=object.get_id())
+            obj.person_details_id = object.get_person_details_id()
+            obj.disease = object.get_disease()
+            obj.if_new=object.get_if_new()
+            obj.is_go_clinic=object.get_is_go_clinic()
+            obj.room_no = object.get_room_no()
+            obj.admission_date = object.get_admission_date()
+            obj.given_things = object.get_given_things()
+            obj.hospital_name = object.get_hospital_name()
+            obj.bed_sores_status = object.get_bed_sores_status()
+            obj.act_independently = object.get_act_independently()
+            obj.toilet_managing = object.get_toilet_managing()
+            obj.urine_managing = object.get_urine_managing()
+            obj.work_in_uyirilai = object.get_work_in_uyirilai()
+            obj.note = object.get_note()
+
+            # Set discharge_reason and discharge_date only if provided
+            if object.get_discharge_reason() is not None :
+                obj.discharge_reason = object.get_discharge_reason()
+
+            if object.get_discharge_date() is not None and object.get_discharge_date() != "None":
+                obj.discharge_date = object.get_discharge_date()
+                personObj = person_details.objects.filter(id=obj.person_details_id).update(person_type="Member")
+                
             
-            obj=home_admission.objects.get(id=object.get_id())
+            obj.save()
             
         else:
             # (obj = home_admission  (goods_main model table name))
             obj = home_admission(
-                disease =object.get_disease(),
-                person_details_id=object.get_person_details(),
+                disease=object.get_disease(),
+                person_details_id=object.get_person_details_id(),
+                if_new=object.get_if_new(),
                 room_no=object.get_room_no(),
-                admission_date=object.get_admission_date(),  
+                is_go_clinic=object.get_is_go_clinic(),
+                admission_date=object.get_admission_date(),
                 given_things=object.get_given_things(),
                 hospital_name=object.get_hospital_name(),
-                bed_source_image=object.get_bed_source_image(),
-                able_to_act_independently=object.get_able_to_act_independently(),
+                bed_sores_status=object.get_bed_sores_status(),
+                act_independently=object.get_act_independently(),
                 toilet_managing=object.get_toilet_managing(),
                 urine_managing=object.get_urine_managing(),
                 work_in_uyirilai=object.get_work_in_uyirilai(),
-                discharge_date=object.get_discharge_date(),            
-                discharge_reason=object.get_discharge_reason(),
-                note=object.get_note())
+                note=object.get_note(),
+                # discharge_reason=object.get_discharge_reason(),
+                # discharge_date=object.get_discharge_date()  # Include discharge info if provided
+            )
             obj.save()
-            personObj=person_details.objects.filter(id=obj.person_details_id).update(person_type="Home Member")                               
-
+            personObj = person_details.objects.filter(id=obj.person_details_id).update(person_type="Home Member")
+            
         response = response_home_admission()
         response.set_id(obj.id)
         response.set_disease(obj.disease)
-        response.set_if_new(obj.if_new)
-        response.set_person_details(obj.person_details_id)
+        response.set_if_new(str(obj.if_new))
+        response.set_person_details_id(obj.person_details_id)
         response.set_admission_date(str(obj.admission_date))
         response.set_room_no(obj.room_no)
         response.set_given_things(obj.given_things)
         response.set_is_go_clinic(obj.is_go_clinic)
         response.set_hospital_name(obj.hospital_name)
-        response.set_bed_source_image(obj.bed_source_image)
-        response.set_able_to_act_independently(obj.able_to_act_independently)
+        response.set_bed_sores_status(obj.bed_sores_status)
+        response.set_act_independently(str(obj.act_independently))
         response.set_toilet_managing(obj.toilet_managing)
         response.set_urine_managing(obj.urine_managing)
         response.set_work_in_uyirilai(obj.work_in_uyirilai)
-        date=obj.discharge_date
-        response.set_discharge_date(str(date))
-        response.set_discharge_reason(obj.discharge_reason)
+        # response.set_discharge_date(str(obj.discharge_date))
+        # response.set_discharge_reason(obj.discharge_reason)
         response.set_note(obj.note)
         response.set_status(obj.status)
 
         return response
 
-
  
- 
-    def drop_down(self, key,query):
+    def drop_down(self, list_type,filter_by):
         condition = Q(status=1)
-        if key != "" and key != None:
-            condition &= Q(list_type=key)  # key are list types example districts , items , address can we dicite any name
-            
-        if query != "" and query != None:
-            condition &= Q(list_value__icontains=query)
+        if list_type != "" and list_type != None:
+            condition &= Q(list_type=list_type)
+                    
+        if filter_by != "" and filter_by != None:
+            condition &= Q(filter_by=filter_by)
+                    
         dropdown_list = dropdown_table.objects.filter(condition)
         print(dropdown_list.query)
         array=[]
@@ -100,7 +110,8 @@ class home_admission_service:
             response.set_status(obj.status)
             array.append(response.get())
 
-        return array
+        # return array
+        return JsonResponse(array, safe=False)
     
     
     
@@ -115,20 +126,19 @@ class home_admission_service:
             response = response_home_admission()
             response.set_id(obj.id)
             response.set_disease(obj.disease)
-            response.set_if_new(obj.if_new)
-            response.set_person_details(obj.person_details_id)
+            response.set_if_new(str(obj.if_new))
+            response.set_person_details_id(obj.person_details_id)
             response.set_admission_date(str(obj.admission_date))
             response.set_room_no(obj.room_no)
             response.set_given_things(obj.given_things)
-            response.set_is_go_clinic(obj.is_go_clinic)
+            response.set_is_go_clinic(str(obj.is_go_clinic))
             response.set_hospital_name(obj.hospital_name)
-            response.set_bed_source_image(obj.bed_source_image)
-            response.set_able_to_act_independently(obj.able_to_act_independently)
+            response.set_bed_sores_status(obj.bed_sores_status)
+            response.set_act_independently(str(obj.act_independently))
             response.set_toilet_managing(obj.toilet_managing)
             response.set_urine_managing(obj.urine_managing)
             response.set_work_in_uyirilai(obj.work_in_uyirilai)
-            date=obj.discharge_date
-            response.set_discharge_date(str(date))
+            response.set_discharge_date(str(obj.discharge_date))
             response.set_discharge_reason(obj.discharge_reason)
             response.set_note(obj.note)
             

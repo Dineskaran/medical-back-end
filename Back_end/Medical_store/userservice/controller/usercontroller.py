@@ -58,8 +58,8 @@ def retrify_home_admission(request):
 @api_view(['GET'])
 def drop_down(request):
     if request.method=='GET':
-        key = request.GET.get("key")
-        query=request.GET.get("query")
+        list_type = request.GET.get("list_type")
+        value_filter = request.GET.get("filter_by")
         utlis_service=home_admission_service()
-        obj=utlis_service.drop_down(key,query)
+        obj=utlis_service.drop_down(list_type,value_filter)
         return HttpResponse(obj, content_type='application/json')
