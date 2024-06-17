@@ -152,7 +152,7 @@ class nurse_duty(models.Model):
 class user_details(models.Model):
     
     user_name=models.CharField(max_length=30,null=True)
-    user_id=models.CharField(max_length=30,null=True)
+    userid=models.CharField(max_length=30,null=True)
     password=models.CharField(max_length=255,null=True)
     privilege=models.CharField(max_length=120,null=True)
     create_date=models.DateTimeField(default=datetime.datetime.now())

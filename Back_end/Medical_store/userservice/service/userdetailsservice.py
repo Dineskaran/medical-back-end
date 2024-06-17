@@ -15,33 +15,35 @@ class user_details_service:
     def insert_user(self, user_data):
         if user_data.get_id() is not None and user_data.get_id() != 0:
             # Update existing user record
-            user_details.objects.filter(id=user_data.get_id()).update(
-                user_id=user_data.get_user_id(),
+            user_obj=user_details.objects.filter(id=user_data.get_id()).update(                
+                userid=user_data.get_userid(),
                 user_name=user_data.get_user_name(),
-                password=user_data.get_password(),
+                # password=user_data.get_password(),
                 privilege=user_data.get_privilege(),
-                create_date=user_data.get_create_date(),
-                create_by=user_data.get_create_by(),
+                # create_date=user_data.get_create_date(),
+                # create_by=user_data.get_create_by(),
                 # status=user_data.status()
             )
             
-            user_obj = user_details.objects.get(id=user_data.get_user_id())
+            user_obj = user_details.objects.get(id=user_data.get_id())
             
         else:
             # Create new user record
             user_obj = user_details.objects.create(
-                user_id=user_data.get_user_id(),
+                
+                userid=user_data.get_userid(),
                 user_name=user_data.get_user_name(),
                 password=user_data.get_password(),
                 privilege=user_data.get_privilege(),
-                create_date=user_data.get_create_date(),
+                # create_date=user_data.get_create_date(),
                 create_by=user_data.get_create_by(),
                 # status=user_data.status()
             )
+            user_obj.save()
         
         response = user_details_response()
         response.set_id(user_obj.id)
-        response.set_user_id(user_obj.user_id)
+        response.set_userid(user_obj.userid)
         response.set_user_name(user_obj.user_name)
         response.set_password(user_obj.password)  
         response.set_privilege(user_obj.privilege)
@@ -50,6 +52,24 @@ class user_details_service:
         # response.set_status(user_obj.status)
         
         return response
+    
+    
+    
+    def get_users_byid(self,id):
+        user_obj = user_details.objects.get(id=id)
+        
+        response = user_details_response()
+        response.set_id(user_obj.id)
+        response.set_userid(user_obj.userid)
+        response.set_user_name(user_obj.user_name)
+        response.set_password(user_obj.password)  
+        response.set_privilege(user_obj.privilege)
+        response.set_create_date(str(user_obj.create_date))
+        response.set_create_by(user_obj.create_by)
+        
+        return response
+        
+        
 
     def get_users(self):
         condition = Q(status=1)
@@ -59,9 +79,9 @@ class user_details_service:
         for obj in user_list:
             response = user_details_response()
             response.set_id(obj.id)
-            response.set_user_id(obj.user_id)
+            response.set_userid(obj.userid)
             response.set_user_name(obj.user_name)
-            response.set_password(obj.password)  
+            # response.set_password(obj.password)  
             response.set_privilege(obj.privilege)
             response.set_create_date(str(obj.create_date))
             response.set_create_by(obj.create_by)
@@ -70,6 +90,7 @@ class user_details_service:
             array_list.append(response.get())
         
         return JsonResponse(array_list, safe=False)
+    
 
     def delete_user(self, id):
         user_details.objects.filter(id=id).update(status=0)

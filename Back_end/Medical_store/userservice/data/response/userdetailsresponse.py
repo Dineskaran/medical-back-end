@@ -3,13 +3,14 @@ import json
 class user_details_response:
     
     id = None
-    user_id = None
+    userid = None
     user_name = None  
     password = None
     privilege = None
     create_date = None
     create_by = None
     status = None
+    
 
 
     def get(self):
@@ -19,8 +20,8 @@ class user_details_response:
     def set_id(self, id):
         self.id = id
 
-    def set_user_id(self, user_id):
-        self.user_id = user_id
+    def set_userid(self, userid):
+        self.userid = userid
 
     def set_user_name(self, user_name):
         self.user_name = user_name
@@ -48,12 +49,12 @@ class user_details_response:
 
 # class user_details_response:
     
-#     def __init__(self, id: Optional[int] = None, user_name: Optional[str] = None, user_id: Optional[str] = None,
+#     def __init__(self, id: Optional[int] = None, user_name: Optional[str] = None, userid: Optional[str] = None,
 #                  password: Optional[str] = None, privilege: Optional[str] = None, create_date: Optional[datetime] = None,
 #                  create_by: Optional[str] = None, status: Optional[str] = None):
 #         self._id = id
 #         self._user_name = user_name
-#         self._user_id = user_id
+#         self._userid = userid
 #         self._password = password
 #         self._privilege = privilege
 #         self._create_date = create_date
@@ -77,12 +78,12 @@ class user_details_response:
 #         self._user_name = user_name
 
 #     @property
-#     def user_id(self):
-#         return self._user_id
+#     def userid(self):
+#         return self._userid
 
-#     @user_id.setter
-#     def user_id(self, user_id: str):
-#         self._user_id = user_id
+#     @userid.setter
+#     def userid(self, userid: str):
+#         self._userid = userid
 
 #     @property
 #     def password(self):
@@ -129,6 +130,6 @@ class user_details_response:
 #                           sort_keys=True, indent=4)
 
 #     def __repr__(self):
-#         return (f"UserDetailResponse(id={self._id}, user_name={self._user_name}, user_id={self._user_id}, "
+#         return (f"UserDetailResponse(id={self._id}, user_name={self._user_name}, userid={self._userid}, "
 #                 f"password={self._password}, privilege={self._privilege}, create_date={self._create_date}, "
 #                 f"create_by={self._create_by}, status={self._status})")

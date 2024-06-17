@@ -14,14 +14,14 @@ from userservice.service.nurseservice import nurse_duty_service
 def insert_nurse_duty_details(request):
     if request.method=='POST':
         data=json.loads(request.body)
-        print(data)
+        # print(data)
         nurse_request=nurse_duty_request(data)
         nurse_servise=nurse_duty_service()
         response=nurse_servise.insert_nurse_duty(nurse_request)
         return HttpResponse(response.get(),content_type='application/json')
     
     else:
-        print("call from nurse_duty component")
+        # print("call from nurse_duty component")
         nurse_servise=nurse_duty_service()
         response=nurse_servise.get_nurse_duty()   # this get_nurse_duty()  getting nurseservise in to get_nurse_duty no 51
         return HttpResponse(response,content_type='application/json')

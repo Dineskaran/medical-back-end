@@ -14,14 +14,14 @@ from userservice.service.personservice import person_detals_service
 def insert_prson_details(request):
     if request.method=='POST':
         data=json.loads(request.body)
-        print(data)
+        # print(data)
         person_request=person_details_request(data)
         service= person_detals_service()
         response=service.insert_person(person_request)
         return HttpResponse(response.get(),content_type='application/json')
     
     else:
-        print("call from person_service component")
+        # print("call from person_service component")
         person_type = request.GET.get("person_type")
         service= person_detals_service()
         response=service.get_persons(person_type)  

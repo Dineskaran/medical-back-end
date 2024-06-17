@@ -11,6 +11,7 @@ def insert_user(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         user_request = user_details_request(data)
+        print("check user",user_request)
         service = user_details_service()
         response = service.insert_user(user_request)
         return HttpResponse(response.get(), content_type='application/json')

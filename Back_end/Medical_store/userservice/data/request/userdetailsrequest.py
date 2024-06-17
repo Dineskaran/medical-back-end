@@ -4,7 +4,7 @@ class user_details_request:
     
     id = None
     user_name = None
-    user_id = None
+    userid = None
     password = None
     privilege = None
     create_date = None
@@ -23,8 +23,8 @@ class user_details_request:
         if 'password' in object:
             self.password = object['password']
         
-        if 'user_id' in object:
-            self.user_id = object['user_id']
+        if 'userid' in object:
+            self.userid = object['userid']
             
         if 'privilege' in object:
             self.privilege = object['privilege']
@@ -45,8 +45,8 @@ class user_details_request:
     def get_user_name(self):
         return self.user_name
     
-    def get_user_id(self):
-        return self.user_id
+    def get_userid(self):
+        return self.userid
     
     def get_password(self):
         return self.password

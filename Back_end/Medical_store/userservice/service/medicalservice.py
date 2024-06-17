@@ -5,9 +5,9 @@ from django.db.models import Q
 from django.contrib.auth.models import User
 import datetime
 
-from userservice.data.response.userresponse import  response_home_admission ,dropdown_response
+from userservice.data.response.userresponse import  response_home_admission 
 from userservice.data.request.userrequest import home_admission_request
-from userservice.models import home_admission, dropdown_table, person_details
+from userservice.models import home_admission, person_details
 
 
 # from userservice.utls.medicalutlls import utlis
@@ -91,28 +91,7 @@ class home_admission_service:
         return response
 
  
-    def drop_down(self, list_type,filter_by):
-        condition = Q(status=1)
-        if list_type != "" and list_type != None:
-            condition &= Q(list_type=list_type)
-                    
-        if filter_by != "" and filter_by != None:
-            condition &= Q(filter_by=filter_by)
-                    
-        dropdown_list = dropdown_table.objects.filter(condition)
-        print(dropdown_list.query)
-        array=[]
-        for obj in dropdown_list:
-            response = dropdown_response()
-            response.set_id(obj.id)
-            response.set_list_type(obj.list_type)
-            response.set_list_value(obj.list_value)
-            response.set_status(obj.status)
-            array.append(response.get())
-
-        # return array
-        return JsonResponse(array, safe=False)
-    
+   
     
     
     #id used to get the details to the database
@@ -154,3 +133,28 @@ class home_admission_service:
         response.set_id("CATEGORY DELETED "+str(id))
         print("SUCCESSFULLY CATEGORY DELETED")
         return response
+    
+    
+    
+    # def drop_down(self, list_type,filter_by):
+    #     condition = Q(status=1)
+    #     if list_type != "" and list_type != None:
+    #         condition &= Q(list_type=list_type)
+                    
+    #     if filter_by != "" and filter_by != None:
+    #         condition &= Q(filter_by=filter_by)
+                    
+    #     dropdown_list = dropdown_table.objects.filter(condition)
+    #     print(dropdown_list.query)
+    #     array=[]
+    #     for obj in dropdown_list:
+    #         response = dropdown_response()
+    #         response.set_id(obj.id)
+    #         response.set_list_type(obj.list_type)
+    #         response.set_list_value(obj.list_value)
+    #         response.set_status(obj.status)
+    #         array.append(response.get())
+
+    #     # return array
+    #     return JsonResponse(array, safe=False)
+    
