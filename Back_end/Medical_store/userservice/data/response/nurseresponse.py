@@ -9,6 +9,9 @@ class nurse_duty_response:
     duty_option = None
     status = None
     note = None
+    designation = None
+    by_whom = None
+    
     
     def get(self):
       return json.dumps(self, default=lambda o: o.__dict__,
@@ -38,3 +41,9 @@ class nurse_duty_response:
 
     def set_note(self,note):
         self.note=note
+        
+    def set_designation(self,designation):
+        self.designation=designation
+
+    def set_by_whom(self,by_whom):
+        self.by_whom=by_whom

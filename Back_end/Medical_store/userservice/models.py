@@ -141,6 +141,8 @@ class nurse_duty(models.Model):
     duty_option=models.CharField(max_length=120,null=True)
     status=models.IntegerField(default=1)
     note=models.CharField(max_length=150,null=True)
+    designation=models.CharField(max_length=150,null=True)
+    by_whom=models.CharField(max_length=150,null=True)
     
     class Meta:
         db_table="nurse_duty"

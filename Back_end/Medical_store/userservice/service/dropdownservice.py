@@ -47,7 +47,6 @@ class dropdown_service:
             condition &= Q(filter_by=filter_by)
                     
         dropdown_list = dropdown_table.objects.filter(condition)
-        print(dropdown_list.query)
         array=[]
         for obj in dropdown_list:
             response = dropdown_response()
@@ -57,9 +56,24 @@ class dropdown_service:
             response.set_filter_by(obj.filter_by)
             response.set_status(obj.status)
             array.append(response.get())
-
-        # return array
         return JsonResponse(array, safe=False)
+    
+    
+    def get_distinList(self):
+        condition = Q(status=1)            
+        dropdown_list = dropdown_table.objects.filter(condition)
+        distinctList = dropdown_list.values('list_type').distinct()
+        array=[]
+        
+        for obj in distinctList:
+          
+            response = dropdown_response()
+            response.set_list_type(obj['list_type'])
+            print("response obj obj" , response)
+            array.append(response.get())
+        return JsonResponse(array, safe=False)
+    
+    
     
     def delete_dropdown(self,id):
         obj = dropdown_table.objects.filter(id=id).update(status=0)

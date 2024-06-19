@@ -21,7 +21,10 @@ class nurse_duty_service:
                 person_details_id=object.get_person_details_id(),
                 person_type=object.get_person_type(),
                 duty_option=object.get_duty_option(),
-                note=object.get_note())
+                note=object.get_note(),
+                designation=object.get_designation(),
+                by_whom=object.get_by_whom())
+            
             duty_obj= nurse_duty.objects.get(id=object.get_id())
             
         else:
@@ -32,7 +35,10 @@ class nurse_duty_service:
                 person_details_id=object.get_person_details_id(),
                 person_type=object.get_person_type(),
                 duty_option=object.get_duty_option(),
+                designation=object.get_designation(),
+                by_whom=object.get_by_whom(),
                 note=object.get_note())
+            
             duty_obj.save()
             
         response =nurse_duty_response()
@@ -44,6 +50,8 @@ class nurse_duty_service:
         response.set_person_type(duty_obj.person_type)
         response.set_status(duty_obj.status)
         response.set_note(duty_obj.note)
+        response.set_designation(duty_obj.designation)
+        response.set_by_whom(duty_obj.by_whom)
         
         return response
     
@@ -64,6 +72,8 @@ class nurse_duty_service:
             response.set_duty_option(obj.duty_option)
             response.set_status(obj.status)
             response.set_note(obj.note)
+            response.set_designation(obj.designation)
+            response.set_by_whom(obj.by_whom)
             
             array_list.append(response.get())
         return JsonResponse(array_list, safe=False)

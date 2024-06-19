@@ -34,15 +34,13 @@ def insert_dropdown(request):
 
 
 
-# @csrf_exempt
-# @api_view(['GET'])
-# def drop_down(request):
-#     if request.method=='GET':
-#         list_type = request.GET.get("list_type")
-#         value_filter = request.GET.get("filter_by")
-#         utlis_service= dropdown_service()
-#         obj=utlis_service.get_dropdown(list_type,value_filter)
-#         return HttpResponse(response.get(),content_type='application/json')
+@csrf_exempt
+@api_view(['GET'])
+def drop_down_distin(request):
+    if request.method=='GET':
+        utlis_service= dropdown_service()
+        response=utlis_service.get_distinList()
+        return HttpResponse(response,content_type='application/json')
  
  
 @csrf_exempt

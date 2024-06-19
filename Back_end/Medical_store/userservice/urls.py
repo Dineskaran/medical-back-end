@@ -10,7 +10,7 @@ urlpatterns=[
     path('delete',usercontroller.retrify_home_admission),
     
     path('insert_drop_down',dropdowncontroller.insert_dropdown),
-    # path('get_drop_down',dropdowncontroller.drop_down),
+    path('drop_down_distin',dropdowncontroller.drop_down_distin),
     path('delete_dropdown',dropdowncontroller.delete_drop_down),
     
     path('insert_nurse_duty',nursedutycontroller.insert_nurse_duty_details),

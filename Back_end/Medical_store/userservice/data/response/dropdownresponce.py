@@ -25,3 +25,22 @@ class dropdown_response:
 
     def set_status(self, status):
         self.status = status
+
+
+
+class drop_distinct_response:
+    
+    
+    def __init__(self):
+        self.data = {}
+    
+    def set_list_type(self, list_type):
+        self.data['list_type'] = list_type
+    
+    def get(self):
+        return self.data
+    
+    def __str__(self):
+        return f"dropdown_response(list_type={self.data.get('list_type')})"
+
+    

@@ -11,6 +11,9 @@ class nurse_duty_request:
     duty_option = None
     status = None
     note = None
+    designation = None
+    by_whom = None
+    
 
 
     def __init__(self, object):
@@ -38,6 +41,12 @@ class nurse_duty_request:
         
         if 'note' in object:
             self.note = object['note']
+            
+        if 'designation' in object:
+            self.designation = object['designation']
+        
+        if 'by_whom' in object:
+            self.by_whom = object['by_whom']
         
 
     def get_id(self):
@@ -63,5 +72,11 @@ class nurse_duty_request:
 
     def get_note(self):
         return self.note
+    
+    def get_designation(self):
+        return self.designation
+
+    def get_by_whom(self):
+        return self.by_whom
 
 
