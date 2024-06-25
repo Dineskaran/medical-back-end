@@ -40,7 +40,7 @@ def manage_user(request):
 @api_view(['POST'])
 def change_password(request):
     data = json.loads(request.body)
-    user_id = data.get("user_id")
+    user_id = data.get("userid")
     old_password = data.get("old_password")
     new_password = data.get("new_password")
     service = user_details_service()
@@ -49,11 +49,35 @@ def change_password(request):
 
 
 @csrf_exempt
-@api_view(['POST'])
+@api_view(['GET'])
 def login(request):
-    data = json.loads(request.body)
-    username = data.get("username")
-    password = data.get("password")
+    # data = json.loads(request.body)
+    userid = request.GET.get("userid")
+    plainpassword = request.GET.get("password")
+    print(userid, "check pass: ",plainpassword)
     service = user_details_service()
-    response = service.authenticate_user(username, password)
+    response = service.authenticate_user(userid, plainpassword)
     return HttpResponse(response, content_type='application/json')
+  
+        
+
+
+
+# @csrf_exempt
+# @api_view(['POST','GET'])
+# def registLogin(request):
+#     if request.method=="POST":
+#         data=json.loads(request.body)
+#         print(data)
+#         userRequest=user_details_request(data)
+#         service = user_details_service()
+#         response = service.create_user(userRequest)
+#         return HttpResponse(response.get(), content_type='application/json')
+        
+    
+#     else:
+#         userid=request.GET.get("userid") 
+#         password=request.GET.get("password")          
+#         service = user_details_service() 
+#         response = service.login(userid,password)
+#         return HttpResponse(response, content_type='application/json')
