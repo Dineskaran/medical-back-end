@@ -11,7 +11,7 @@ class login_info_request:
     log_out_time = None
     num_of_attempt = None
     log_status = None
-    status = None
+    userid= None
 
 
     def __init__(self, object):
@@ -39,8 +39,8 @@ class login_info_request:
         if 'log_status' in object:
             self.log_status = object['log_status']
 
-        if 'status' in object:
-            self.status = object['status']
+        if 'userid' in object:
+            self.userid = object['userid']
 
 
 
@@ -53,6 +53,9 @@ class login_info_request:
 
     def get_log_date(self):
         return self.log_date
+
+    def get_userid(self):
+        return self.userid
 
     def get_log_time(self):
         return self.log_time
@@ -69,5 +72,4 @@ class login_info_request:
     def get_log_status(self):
         return self.log_status
 
-    def get_status(self):
-        return self.status
+ 

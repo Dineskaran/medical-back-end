@@ -86,59 +86,56 @@ class user_details_service:
     def change_password(self, userid, old_password, new_password):
         try:
             user_obj = user_details.objects.filter(userid=userid).first()
+            response = user_details_response()
+            array_list = []
             if user_obj and check_password(old_password, user_obj.password):
                 encrypted_password = make_password(new_password)
                 user_obj.password = encrypted_password
                 user_obj.save()
-                return JsonResponse({"message": "Password changed successfully"}, safe=False)
+                response.set_status("changed successfully")
+                array_list.append(response.get())
+                return JsonResponse(array_list, safe=False)
+                
+                # return JsonResponse({"message": "changed successfully"}, safe=False)
             else:
-                return JsonResponse({"error": "Invalid old password"}, status=400, safe=False)
+                # return JsonResponse({"error": "Invalid old password"}, status=400, safe=False)
+                response.set_status("Invalid password")
+                array_list.append(response.get())
+                return JsonResponse(array_list, safe=False)
         except user_details.DoesNotExist:
-            return JsonResponse({"error": "User not found"}, status=404, safe=False)
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=500, safe=False)
+            # return JsonResponse({"error": "User not found"}, status=404, safe=False)
+            response.set_status("Invalid userid")
+            array_list.append(response.get())
+            return JsonResponse(array_list, safe=False)
         
         
 
     def authenticate_user(self, userid, password):
         # try:
-            user_obj = user_details.objects.filter(userid=userid)
+            user_obj =user_details.objects.filter(userid=userid)
             response = user_details_response()
             array_list = []
             if user_obj:
                 if check_password(password,user_obj[0].password):     
-                    # return JsonResponse({"message": "Login successful"}, safe=False)
-                    
                     for obj in user_obj:
-                        # response = user_details_response()
                         response.set_id(obj.id)
                         response.set_userid(obj.userid)
                         response.set_user_name(obj.user_name)
-                        # response.set_password("")  
                         response.set_privilege(obj.privilege)
-                        # response.set_create_date(str(obj.create_date))
-                        # response.set_create_by(obj.create_by)
                         response.set_status("Success")
                         array_list.append(response.get())
                     return JsonResponse(array_list, safe=False)
                         
                 else:
-                       # response = user_details_response()
-                        # response.set_id(obj.id)
-                        # response.set_userid(obj.userid)
-                        # response.set_user_name(obj.user_name)
-                        # response.set_privilege(obj.privilege)
                         response.set_status("Invalid password")
                         array_list.append(response.get())
                         return JsonResponse(array_list, safe=False)
-                    # return JsonResponse({"error": "Invalid password"}, status=401, safe=False)
+                  
             else:
                 response.set_status("Invalid userid")
                 array_list.append(response.get())
                 return JsonResponse(array_list, safe=False)
-                # return JsonResponse({"error": "Invalid username"}, status=400, safe=False)
             print(user_obj)
-        # except user_details.DoesNotExist:
-        #     return JsonResponse({"error": "Invalid username or password"}, status=400, safe=False)
+     
         
         

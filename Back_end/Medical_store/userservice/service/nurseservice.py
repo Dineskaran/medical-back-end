@@ -4,9 +4,10 @@ from django.http import HttpResponse
 from django.db.models import Q
 from django.contrib.auth.models import User
 import datetime
+from django.db.models import Count
 
 
-from userservice.data.response.nurseresponse import nurse_duty_response
+from userservice.data.response.nurseresponse import nurse_duty_response,dutyCountResponse
 from userservice.data.request.nurserequest import nurse_duty_request
 from userservice.models import nurse_duty
 
@@ -79,19 +80,31 @@ class nurse_duty_service:
         return JsonResponse(array_list, safe=False)
     
     def delete_nurse_duty(self,id):
-    #     obj=nurse_duty.objects.get(id=id)
-    #     obj.delete()
-    #     return JsonResponse({"message": "Deleted Successfully"}, safe=False)
-        
         obj=nurse_duty.objects.filter(id=id).update(status=0)
         response=nurse_duty_response()
         return JsonResponse({"message": "Deleted Successfully"}, safe=False)
-        # response.set_id("CATEGORY DELETED "+str(id))
-        # print("SUCCESSFULLY CATEGORY DELETED")
-        # return response
-    
+       
+   
+   # get count dutyoption 
             
-            
+    def count_duty_option(self):
+        results = nurse_duty.objects.values('date').annotate(
+            dressing_count=Count('date', filter= Q(duty_option='Dressing')),
+            catheter_change_count=Count('date', filter= Q(duty_option='Catheter Change')),
+            blood_presser_count=Count('date', filter= Q(duty_option='Blood Presser')),
+            blood_sugar_count=Count('date', filter= Q(duty_option='Blood Sugar'))) .order_by('date')
+        data = []
+        
+        for resultObj in results:
+            response=dutyCountResponse()
+            response.set_duty_date(str(resultObj['date']))
+            response.set_dressing_count(str(resultObj['dressing_count']))
+            response.set_catheter_change_count(str(resultObj['catheter_change_count']))
+            response.set_blood_presser_count(str(resultObj['blood_presser_count']))
+            response.set_blood_sugar_count(str(resultObj['blood_sugar_count']))
+            data.append(response.get())
+        return JsonResponse(data, safe=False)
+        # return data      
             
             
             

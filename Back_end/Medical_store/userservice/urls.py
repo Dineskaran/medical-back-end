@@ -15,6 +15,7 @@ urlpatterns=[
     
     path('insert_nurse_duty',nursedutycontroller.insert_nurse_duty_details),
     path('delete_nurse_duty_details',nursedutycontroller.delete_nurse_duty_details,name="delete_nurse_duty_details"),
+    path('count_duty_option',nursedutycontroller.duty_option_count_details),
     
     path('insert_prson_details',personcontroller.insert_prson_details,name="insert_prson_details"),
     path('delete_prson_details',personcontroller.delete_person_details,name="delete_person_details"),
@@ -23,8 +24,9 @@ urlpatterns=[
     path('manage_user_details',userdetailscontroller.manage_user,name="delete_user_details"),
     path('change password',userdetailscontroller.change_password),
     path('login',userdetailscontroller.login),
+     path('blockuser',userdetailscontroller.block_user, name='block_user'),
     
-    path('insert_log_details',logininfocontroller.insert_log_entry,name="insert_log_details"),
+    path('insert_log_details',logininfocontroller.insert_log,name="insert_log_details"),
     path('delete_log_details',logininfocontroller.delete_log_details,name="delete_log_details"),
    
 ]

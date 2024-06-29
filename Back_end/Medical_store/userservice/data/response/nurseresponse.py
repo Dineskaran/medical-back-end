@@ -47,3 +47,32 @@ class nurse_duty_response:
 
     def set_by_whom(self,by_whom):
         self.by_whom=by_whom
+        
+        
+        
+class dutyCountResponse:
+    duty_date=None
+    dressing_count=None
+    catheter_change_count=None
+    blood_presser_count = None
+    blood_sugar_count = None
+
+    def get(self):
+      return json.dumps(self, default=lambda o: o.__dict__,
+                         sort_keys=True, indent=4)
+
+
+    def set_duty_date(self, duty_date):
+        self.duty_date = duty_date   
+
+    def set_dressing_count(self, dressing_count):
+        self.dressing_count = dressing_count
+
+    def set_catheter_change_count(self, catheter_change_count):
+        self.catheter_change_count = catheter_change_count
+
+    def set_blood_presser_count(self, blood_presser_count):
+        self.blood_presser_count = blood_presser_count
+
+    def set_blood_sugar_count(self, blood_sugar_count):
+        self.blood_sugar_count = blood_sugar_count

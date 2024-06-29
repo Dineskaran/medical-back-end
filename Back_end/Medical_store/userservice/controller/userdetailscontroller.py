@@ -58,8 +58,19 @@ def login(request):
     service = user_details_service()
     response = service.authenticate_user(userid, plainpassword)
     return HttpResponse(response, content_type='application/json')
-  
-        
+
+
+@csrf_exempt
+@api_view(['POST'])
+def block_user(request):
+    user_id = request.data.get('userid')
+    try:
+        user = user_details.objects.get(id=user_id)
+        user.status = 'blocked'  # Adjust this based on your user_details model fields
+        user.save()
+        return JsonResponse({'message': 'User blocked successfully'}, status=200)
+    except user_details.DoesNotExist:
+        return JsonResponse({'message': 'User not found'}, status=404)
 
 
 

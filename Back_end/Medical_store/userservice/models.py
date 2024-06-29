@@ -171,14 +171,15 @@ class user_details(models.Model):
 
 class login_info(models.Model):
 
-    user_details=models.ForeignKey("user_details",on_delete=models.CASCADE)
-    log_date=models.DateTimeField(default=datetime.datetime.now())
-    log_time=models.DateTimeField(null=True)
+    user_details=models.ForeignKey("user_details",on_delete=models.DO_NOTHING)
+    userid=models.CharField(max_length=75)
+    log_date=models.DateField(null=True)
+    log_time=models.TimeField(null=True)
     location=models.CharField(max_length=255)
     log_out_time=models.TimeField(null=True)
-    num_of_attempt=models.TimeField(null=True)
-    log_status=models.IntegerField(null=True)
-    status=models.IntegerField(default=1)
+    num_of_attempt=models.IntegerField(null=True)
+    log_status=models.CharField(max_length=75)
+    # status=models.IntegerField(default=1)
     
     class Meta:
         db_table = "login_info"
@@ -192,7 +193,6 @@ class dropdown_table(models.Model):
     list_value=models.CharField(max_length=255,null=True)
     filter_by = models.CharField(max_length=60, null=True)
     status=models.IntegerField(default=1)
-    
     
     class Meta:
         db_table="dropdown_table"

@@ -5,14 +5,14 @@ import json
 class login_info_response:
 
     id = None
-    user_details = None
+    user_details_id = None
     log_date = None
     log_time = None
     location = None
     log_out_time = None
     num_of_attempt = None
     log_status = None
-    status = None
+    userid = None
     
     
     def get(self):
@@ -22,8 +22,8 @@ class login_info_response:
     def set_id(self,id):
         self.id=id
     
-    def set_user_details(self,user_details):
-        self.user_details=user_details
+    def set_user_details_id(self,user_details_id):
+        self.user_details_id=user_details_id
     
     def set_log_date(self,log_date):
         self.log_date=log_date
@@ -43,8 +43,8 @@ class login_info_response:
     def set_log_status(self,log_status):
         self.log_status=log_status
         
-    def set_status(self,status):
-        self.status=status
+    def set_userid(self,userid):
+        self.userid=userid
         
     
     
