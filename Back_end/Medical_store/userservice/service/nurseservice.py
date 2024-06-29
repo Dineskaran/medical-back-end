@@ -3,11 +3,12 @@ from django.http import JsonResponse
 from django.http import HttpResponse
 from django.db.models import Q
 from django.contrib.auth.models import User
-import datetime
+from datetime import datetime
+
 from django.db.models import Count
 
 
-from userservice.data.response.nurseresponse import nurse_duty_response,dutyCountResponse
+from userservice.data.response.nurseresponse import nurse_duty_response,dutyCountResponse,nurse_duty_report_response
 from userservice.data.request.nurserequest import nurse_duty_request
 from userservice.models import nurse_duty
 
@@ -87,8 +88,25 @@ class nurse_duty_service:
    
    # get count dutyoption 
             
-    def count_duty_option(self):
-        results = nurse_duty.objects.values('date').annotate(
+    def count_duty_option(self,start_date_str, end_date_str):
+        # Convert string dates to datetime objects
+        try:
+            # Attempt to parse in '%d-%m-%Y' format
+            start_date = datetime.strptime(start_date_str, '%d-%m-%Y').date()
+            end_date = datetime.strptime(end_date_str, '%d-%m-%Y').date()
+        except ValueError:
+            try:
+                # Attempt to parse in '%Y-%m-%d' format
+                start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
+                end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date()
+            except ValueError:
+                return JsonResponse({"error": "Incorrect date format, should be either DD-MM-YYYY or YYYY-MM-DD"}, status=400)
+        # Filter nurse_duty records based on date range
+        
+        condition=Q(status=1)
+        
+        results = nurse_duty.objects.filter(condition,date__range=(start_date, end_date)
+                                            ).values('date').annotate(
             dressing_count=Count('date', filter= Q(duty_option='Dressing')),
             catheter_change_count=Count('date', filter= Q(duty_option='Catheter Change')),
             blood_presser_count=Count('date', filter= Q(duty_option='Blood Presser')),
@@ -105,7 +123,38 @@ class nurse_duty_service:
             data.append(response.get())
         return JsonResponse(data, safe=False)
         # return data      
-            
-            
+    
+    
+    
+    def nurse_duty_report_by_option(self, duty_option):
+        # Filter nurse_duty records with status=1 and the specified duty_option, join with person_details
+        condition = Q(status=1) & Q(duty_option=duty_option)
+        
+        results = nurse_duty.objects.filter(
+            condition
+        ).values(
+            'person_details__id',
+            'person_details__first_name',
+            'person_details__last_name',
+            'person_details__gender',
+            'person_details__district'
+        ).annotate(
+            duty_count=Count('duty_option')
+        ).order_by('person_details__first_name', 'person_details__last_name')
+        
+        data = []
+        
+        for result in results:
+            response = nurse_duty_report_response()
+            response.set_person_id(result['person_details__id'])
+            response.set_first_name(result['person_details__first_name'])
+            response.set_last_name(result['person_details__last_name'])
+            response.set_gender(result['person_details__gender'])
+            response.set_district(result['person_details__district'])
+            response.set_duty_count(result['duty_count'])
+            data.append(response.get())
+        
+        # return JsonResponse(data, safe=False)
+        return data
             
         

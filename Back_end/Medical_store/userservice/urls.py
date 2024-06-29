@@ -16,6 +16,7 @@ urlpatterns=[
     path('insert_nurse_duty',nursedutycontroller.insert_nurse_duty_details),
     path('delete_nurse_duty_details',nursedutycontroller.delete_nurse_duty_details,name="delete_nurse_duty_details"),
     path('count_duty_option',nursedutycontroller.duty_option_count_details),
+    path('nurse_duty_report',nursedutycontroller.nurse_duty_report_details, name='nurse_duty_report'),
     
     path('insert_prson_details',personcontroller.insert_prson_details,name="insert_prson_details"),
     path('delete_prson_details',personcontroller.delete_person_details,name="delete_person_details"),

@@ -76,3 +76,36 @@ class dutyCountResponse:
 
     def set_blood_sugar_count(self, blood_sugar_count):
         self.blood_sugar_count = blood_sugar_count
+        
+        
+        
+        
+class nurse_duty_report_response:
+    def __init__(self):
+        self.person_id = None
+        self.first_name = None
+        self.last_name = None
+        self.gender = None
+        self.district = None
+        self.duty_count = None
+
+    def get(self):
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
+
+    def set_person_id(self, person_id):
+        self.person_id = person_id
+
+    def set_first_name(self, first_name):
+        self.first_name = first_name
+
+    def set_last_name(self, last_name):
+        self.last_name = last_name
+
+    def set_gender(self, gender):
+        self.gender = gender
+
+    def set_district(self, district):
+        self.district = district
+
+    def set_duty_count(self, duty_count):
+        self.duty_count = duty_count

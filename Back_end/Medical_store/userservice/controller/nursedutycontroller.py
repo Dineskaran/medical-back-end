@@ -1,8 +1,9 @@
 import json
-import datetime
+from datetime import datetime
 from django.http import HttpResponse
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
+from datetime import datetime
 
 
 from userservice.data.request.nurserequest import nurse_duty_request
@@ -32,12 +33,14 @@ def insert_nurse_duty_details(request):
 @api_view(['GET'])
 def duty_option_count_details(request):
       if request.method=='GET':
-        # data=json.loads(request.body)
-        # print(data)
-        # nurse_request=nurse_duty_request(data)
+        start_date_str = request.GET.get('start_date_str')
+        end_date_str = request.GET.get('end_date_str')
         nurse_servise=nurse_duty_service()
-        response=nurse_servise.count_duty_option()
+        response=nurse_servise.count_duty_option(start_date_str, end_date_str)
         return HttpResponse(response,content_type='application/json')
+    
+    
+    
     
     
 @csrf_exempt
@@ -50,3 +53,17 @@ def delete_nurse_duty_details(request):
         id=request.GET.get("id")
         response = nurse_servise.delete_nurse_duty(id)
         return HttpResponse(response,content_type='application/json')
+    
+    
+    
+@csrf_exempt
+@api_view(['GET'])
+def nurse_duty_report_details(request):
+    if request.method == 'GET':
+        duty_option = request.GET.get('duty_option')
+        if not duty_option:
+            return HttpResponse(json.dumps({"error": "duty_option parameter is required"}), content_type='application/json', status=400)
+        
+        nurse_servise = nurse_duty_service()
+        response = nurse_servise.nurse_duty_report_by_option(duty_option)
+        return HttpResponse(response, content_type='application/json')
