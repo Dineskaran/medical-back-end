@@ -1,5 +1,12 @@
 {
     "python.pythonPath": ".venv\\Scripts\\python.exe",
     "python.linting.pylintEnabled": true,
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "cSpell.words": [
+        "dutyoption",
+        "nurserequest",
+        "nurseresponse",
+        "servise",
+        "userservice"
+    ]
 }

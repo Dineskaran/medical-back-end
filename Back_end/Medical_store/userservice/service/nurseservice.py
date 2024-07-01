@@ -30,7 +30,7 @@ class nurse_duty_service:
             duty_obj= nurse_duty.objects.get(id=object.get_id())
             
         else:
-             # Create new nurse duty record
+            # Create new nurse duty record
             duty_obj=nurse_duty(
                 date=object.get_date(),
                 time=object.get_time(),
@@ -84,9 +84,8 @@ class nurse_duty_service:
         obj=nurse_duty.objects.filter(id=id).update(status=0)
         response=nurse_duty_response()
         return JsonResponse({"message": "Deleted Successfully"}, safe=False)
-       
-   
-   # get count dutyoption 
+
+    # get count dutyoption 
             
     def count_duty_option(self,start_date_str, end_date_str):
         # Convert string dates to datetime objects
@@ -126,24 +125,25 @@ class nurse_duty_service:
     
     
     
+
     def nurse_duty_report_by_option(self, duty_option):
-        # Filter nurse_duty records with status=1 and the specified duty_option, join with person_details
         condition = Q(status=1) & Q(duty_option=duty_option)
         
-        results = nurse_duty.objects.filter(
-            condition
-        ).values(
+        # Query nurse_duty records with status=1 and the specified duty_option, joining with person_details
+        results = nurse_duty.objects.filter(condition).values(
             'person_details__id',
             'person_details__first_name',
             'person_details__last_name',
             'person_details__gender',
             'person_details__district'
         ).annotate(
-            duty_count=Count('duty_option')
+            duty_count=Count('duty_option'),
+            male_count=Count('duty_option', filter=Q(person_details__gender='male')),
+            female_count=Count('duty_option', filter=Q(person_details__gender='Female')),
         ).order_by('person_details__first_name', 'person_details__last_name')
-        
+
         data = []
-        
+
         for result in results:
             response = nurse_duty_report_response()
             response.set_person_id(result['person_details__id'])
@@ -152,9 +152,12 @@ class nurse_duty_service:
             response.set_gender(result['person_details__gender'])
             response.set_district(result['person_details__district'])
             response.set_duty_count(result['duty_count'])
+            response.set_male_count(result['male_count'])
+            response.set_female_count(result['female_count'])
+
+            # Assign total_count directly if supported by your response class
+            response.total_count = result['duty_count']
+
             data.append(response.get())
-        
-        # return JsonResponse(data, safe=False)
+
         return data
-            
-        

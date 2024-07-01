@@ -32,7 +32,7 @@ def insert_nurse_duty_details(request):
 @csrf_exempt
 @api_view(['GET'])
 def duty_option_count_details(request):
-      if request.method=='GET':
+    if request.method=='GET':
         start_date_str = request.GET.get('start_date_str')
         end_date_str = request.GET.get('end_date_str')
         nurse_servise=nurse_duty_service()
@@ -59,11 +59,11 @@ def delete_nurse_duty_details(request):
 @csrf_exempt
 @api_view(['GET'])
 def nurse_duty_report_details(request):
-    if request.method == 'GET':
+    if request.method=='GET':
         duty_option = request.GET.get('duty_option')
-        if not duty_option:
-            return HttpResponse(json.dumps({"error": "duty_option parameter is required"}), content_type='application/json', status=400)
+        if duty_option:
+            nurse_servise = nurse_duty_service()
+            response = nurse_servise.nurse_duty_report_by_option(duty_option)
+            return HttpResponse(response, content_type='application/json')
         
-        nurse_servise = nurse_duty_service()
-        response = nurse_servise.nurse_duty_report_by_option(duty_option)
-        return HttpResponse(response, content_type='application/json')
+        return HttpResponse(json.dumps({"error": "duty_option parameter is required"}), content_type='application/json', status=400)

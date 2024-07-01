@@ -14,8 +14,7 @@ class nurse_duty_response:
     
     
     def get(self):
-      return json.dumps(self, default=lambda o: o.__dict__,
-                         sort_keys=True, indent=4)
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
 
     
     def set_id(self, id):
@@ -58,8 +57,7 @@ class dutyCountResponse:
     blood_sugar_count = None
 
     def get(self):
-      return json.dumps(self, default=lambda o: o.__dict__,
-                         sort_keys=True, indent=4)
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
 
 
     def set_duty_date(self, duty_date):
@@ -88,6 +86,9 @@ class nurse_duty_report_response:
         self.gender = None
         self.district = None
         self.duty_count = None
+        self.male_count = 0   # Initialize male_count and female_count
+        self.female_count = 0
+        self.set_total_count=0
 
     def get(self):
         return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
@@ -109,3 +110,13 @@ class nurse_duty_report_response:
 
     def set_duty_count(self, duty_count):
         self.duty_count = duty_count
+
+    def set_male_count(self, count):
+        self.male_count = count
+    
+    def set_female_count(self, count):
+        self.female_count = count
+        
+    def set_set_total_count(self, set_total_count):
+        self.set_total_count = set_total_count
+ 
