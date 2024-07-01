@@ -26,6 +26,8 @@ class user_details_service:
                     user_name=user_data.get_user_name(),
                     password=hashed_password,
                     privilege=user_data.get_privilege(),
+                    # create_date=datetime.datetime.now(),
+                    create_by=user_data.get_create_by()
                     # Assuming create_date and create_by are handled elsewhere
                 )
             
