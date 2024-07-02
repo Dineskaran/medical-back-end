@@ -31,7 +31,7 @@ class person_detals_service:
                 address=request.get_address(),
                 district=request.get_district(),
                 now_status=request.get_now_status(),
-               
+            
             )
             person_obj = person_details.objects.get(id=request.get_id())
             
@@ -56,7 +56,7 @@ class person_detals_service:
                 address=request.get_address(),
                 district=request.get_district(),
                 now_status=request.get_now_status(),
-               
+            
             )
             person_obj.save()
         

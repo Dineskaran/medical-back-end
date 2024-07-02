@@ -8,6 +8,8 @@ from userservice.controller import logininfocontroller
 urlpatterns=[
     path('home_admission_insert',usercontroller.insert_homeadmission),
     path('delete',usercontroller.retrify_home_admission),
+    path('home_admission_report',usercontroller. home_admission_report),
+    
     
     path('insert_drop_down',dropdowncontroller.insert_dropdown),
     path('drop_down_distin',dropdowncontroller.drop_down_distin),
@@ -25,9 +27,9 @@ urlpatterns=[
     path('manage_user_details',userdetailscontroller.manage_user,name="delete_user_details"),
     path('change password',userdetailscontroller.change_password),
     path('login',userdetailscontroller.login),
-     path('blockuser',userdetailscontroller.block_user, name='block_user'),
+    path('blockuser',userdetailscontroller.block_user, name='block_user'),
     
     path('insert_log_details',logininfocontroller.insert_log,name="insert_log_details"),
     path('delete_log_details',logininfocontroller.delete_log_details,name="delete_log_details"),
-   
+
 ]

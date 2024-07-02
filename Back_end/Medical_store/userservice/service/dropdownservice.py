@@ -33,11 +33,11 @@ class dropdown_service:
         response.set_list_type(obj.list_type)
         response.set_list_value(obj.list_value)    
         response.set_filter_by(obj.filter_by)
-         
+        
         
         return response
     
-     
+
     def get_dropdown(self, list_type,filter_by):
         condition = Q(status=1)
         if list_type != "" and list_type != None:

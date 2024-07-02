@@ -196,4 +196,3 @@ class dropdown_table(models.Model):
     
     class Meta:
         db_table="dropdown_table"
-      

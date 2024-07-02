@@ -1,5 +1,6 @@
 import json
 import datetime
+from django.http import JsonResponse, HttpResponseBadRequest 
 from django.http import HttpResponse
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
@@ -33,7 +34,6 @@ def insert_homeadmission(request):
         return HttpResponse(response,content_type='application/json')
         
         
-   
 #id used to get the details to the database
 
 @csrf_exempt
@@ -54,12 +54,15 @@ def retrify_home_admission(request):
         return HttpResponse(response.get(),content_type='application/json')
 
 
-# @csrf_exempt
-# @api_view(['GET'])
-# def drop_down(request):
-#     if request.method=='GET':
-#         list_type = request.GET.get("list_type")
-#         value_filter = request.GET.get("filter_by")
-#         utlis_service=home_admission_service()
-#         obj=utlis_service.drop_down(list_type,value_filter)
-#         return HttpResponse(obj, content_type='application/json')
+
+@csrf_exempt
+@api_view(['GET'])
+def home_admission_report(request):
+    date_option = request.GET.get('date_option')
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+    service = home_admission_service()
+    response = service.get_home_admission_report(date_option, start_date,end_date)
+    
+    return HttpResponse(response, content_type='application/json')
+

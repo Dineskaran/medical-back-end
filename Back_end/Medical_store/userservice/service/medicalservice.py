@@ -5,7 +5,7 @@ from django.db.models import Q
 from django.contrib.auth.models import User
 import datetime
 
-from userservice.data.response.userresponse import  response_home_admission 
+from userservice.data.response.userresponse import  response_home_admission ,ResponseHomeAdmission
 from userservice.data.request.userrequest import home_admission_request
 from userservice.models import home_admission, person_details
 
@@ -90,8 +90,7 @@ class home_admission_service:
 
         return response
 
- 
-   
+
     
     
     #id used to get the details to the database
@@ -135,4 +134,102 @@ class home_admission_service:
         return response
     
     
-   
+    # def get_home_admission_report(self, admission_date=None, discharge_date=None):
+    #     condition = Q(status=1)
+
+    #     if admission_date:
+    #         condition &= Q(admission_date=admission_date)
+
+    #     if discharge_date:
+    #         condition &= Q(discharge_date=discharge_date)
+
+    #     obj_list = home_admission.objects.filter(condition)
+    #     array_list = []
+
+    #     for obj in obj_list:
+    #         response = ResponseHomeAdmission()
+    #         response.set_id(obj.id)
+    #         response.set_disease(obj.disease)
+    #         response.set_person_details_id(obj.person_details_id)
+    #         person = person_details.objects.get(id=obj.person_details_id)
+    #         response.person_first_name = person.first_name
+    #         response.person_last_name = person.last_name
+    #         response.person_district = person.district
+    #         response.person_gender = person.gender
+
+    #         if admission_date:
+    #             response.set_admission_date(str(obj.admission_date))
+    #             response.set_admission_related_details(
+    #                 disease=obj.disease,
+    #                 admission_date=str(obj.admission_date)
+    #             )
+    #         if discharge_date:
+    #             response.set_discharge_date(str(obj.discharge_date))
+    #             response.set_discharge_related_details(
+    #                 disease=obj.disease,
+    #                 discharge_date=str(obj.discharge_date)
+    #             )
+
+    #         array_list.append(response.get())
+
+    #     return JsonResponse(array_list, safe=False)
+    
+    
+    
+    
+    def get_home_admission_report(self, duty_option=None, start_date=None, end_date=None):
+        condition = Q(status=1)
+        array_list = []
+
+        try:
+            if duty_option == 'admission_date' or duty_option is None:
+                if start_date and end_date:
+                    condition &= Q(admission_date__gte=start_date, admission_date__lte=end_date)
+
+                admission_list = home_admission.objects.filter(condition)
+
+                for obj in admission_list:
+                    response = ResponseHomeAdmission()
+                    response.set_id(obj.id)
+                    response.set_disease(obj.disease)
+                    response.set_admission_date(str(obj.admission_date))
+                    response.set_person_details_id(obj.person_details_id)
+
+                    person = person_details.objects.get(id=obj.person_details_id)
+                    response.set_person_details(
+                        first_name=person.first_name,
+                        last_name=person.last_name,
+                        gender=person.gender,
+                        district=person.district
+                    )
+                    array_list.append(response.get())
+
+            if duty_option == 'discharge_date':
+                if start_date and end_date:
+                    condition &= Q(discharge_date__gte=start_date, discharge_date__lte=end_date)
+
+                discharge_list = home_admission.objects.filter(condition)
+
+                for obj in discharge_list:
+                    response = ResponseHomeAdmission()
+                    response.set_id(obj.id)
+                    response.set_disease(obj.disease)
+                    response.set_discharge_reason(obj.discharge_reason)
+                    response.set_discharge_date(str(obj.discharge_date))
+                    response.set_admission_date(str(obj.admission_date))
+                    response.set_person_details_id(obj.person_details_id)
+
+                    person = person_details.objects.get(id=obj.person_details_id)
+                    response.set_person_details(
+                        first_name=person.first_name,
+                        last_name=person.last_name,
+                        gender=person.gender,
+                        district=person.district
+                    )
+                    array_list.append(response.get())
+
+            return JsonResponse(array_list, safe=False) 
+            # return array_list
+
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)

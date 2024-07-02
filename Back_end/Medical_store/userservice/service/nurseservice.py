@@ -160,4 +160,5 @@ class nurse_duty_service:
 
             data.append(response.get())
 
-        return data
+        return JsonResponse(data, safe=False)
+

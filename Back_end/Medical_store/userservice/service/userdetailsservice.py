@@ -132,12 +132,11 @@ class user_details_service:
                         response.set_status("Invalid password")
                         array_list.append(response.get())
                         return JsonResponse(array_list, safe=False)
-                  
             else:
                 response.set_status("Invalid userid")
                 array_list.append(response.get())
                 return JsonResponse(array_list, safe=False)
             print(user_obj)
-     
+    
         
         
