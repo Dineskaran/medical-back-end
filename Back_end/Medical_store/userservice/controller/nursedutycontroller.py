@@ -22,9 +22,11 @@ def insert_nurse_duty_details(request):
         return HttpResponse(response.get(),content_type='application/json')
     
     else:
+        start_date = request.GET.get('start_date_str')
+        end_date = request.GET.get('end_date_str')
         # print("call from nurse_duty component")
         nurse_servise=nurse_duty_service()
-        response=nurse_servise.get_nurse_duty()   # this get_nurse_duty()  getting nurseservise in to get_nurse_duty no 51
+        response = nurse_servise.get_nurse_duty(start_date, end_date) # this get_nurse_duty()  getting nurseservise in to get_nurse_duty no 51
         return HttpResponse(response,content_type='application/json')
     
     

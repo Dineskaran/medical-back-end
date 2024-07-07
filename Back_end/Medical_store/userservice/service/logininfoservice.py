@@ -54,15 +54,26 @@ class login_info_service:
             print("INSERT ERROR IS ",e)
             return JsonResponse({"error": str(e)}, status=500)
 
-    def get_log_entries(self):
-        print("LOGIN INFO load service is called")
+    def get_log_entries(self,start_date=None, end_date=None):
+        # print("LOGIN INFO load service is called")
         try:
-            # condition = Q(status=1)  # Assuming 'active' status means it's not deleted
-            thirty_days_ago = datetime.now() - timedelta(days=30)
-        
-            obj_list = login_info.objects.filter(log_date__gte=thirty_days_ago).order_by('-log_date', '-log_time')
+            condition = Q()  # Start with an empty condition
+
+            # Apply date range condition if both start_date and end_date are provided
+            if start_date and end_date:
+                start_date = datetime.strptime(start_date, '%Y-%m-%d')
+                end_date = datetime.strptime(end_date, '%Y-%m-%d') + timedelta(days=1)
+                condition &= Q(log_date__range=(start_date, end_date))
+
+            # Query for log entries filtered by condition, ordered by log_date and log_time
+            obj_list = login_info.objects.filter(condition).order_by('-log_date', '-log_time')
+
+            # Limit result if start_date and end_date are not provided
+            if not start_date and not end_date:
+                obj_list = obj_list[:12]
+
             response_list = []
-            print("LOGIN INFO QUERY ",obj_list.query)
+
             for obj in obj_list:
                 response = login_info_response()
                 response.set_id(obj.id)
@@ -74,9 +85,11 @@ class login_info_service:
                 response.set_log_out_time(str(obj.log_out_time))
                 response.set_num_of_attempt(obj.num_of_attempt)
                 response.set_log_status(obj.log_status)
-                
+
                 response_list.append(response.get())
+
             return JsonResponse(response_list, safe=False)
+
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
     

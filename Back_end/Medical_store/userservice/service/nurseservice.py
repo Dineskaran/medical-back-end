@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.http import HttpResponse
 from django.db.models import Q
 from django.contrib.auth.models import User
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.db.models import Count
 
@@ -59,9 +59,21 @@ class nurse_duty_service:
     
     
     
-    def get_nurse_duty(self):
+    def get_nurse_duty(self, start_date_str=None, end_date_str=None):
         condition = Q(status=1)
-        obj_list = nurse_duty.objects.filter(condition).select_related('person_details')
+
+        if start_date_str and end_date_str:
+            try:
+                start_date = datetime.strptime(start_date_str, '%Y-%m-%d')
+                end_date = datetime.strptime(end_date_str, '%Y-%m-%d') + timedelta(days=1)
+                condition &= Q(date__range=(start_date, end_date))
+            except ValueError:
+                return {'error': 'Invalid date format. Use YYYY-MM-DD.'}
+
+        obj_list = nurse_duty.objects.filter(condition).select_related('person_details').order_by('-date', '-time')
+
+        if not start_date_str and not end_date_str:
+            obj_list = obj_list[:12]
         array_list = []
         
         for obj in obj_list:

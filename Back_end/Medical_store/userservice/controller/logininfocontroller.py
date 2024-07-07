@@ -19,14 +19,15 @@ def insert_log(request):
         print("call from login form",log_request)
         log_servise=login_info_service()
         response=log_servise.insert_log_entry(log_request)
-        print("Response to login form",log_request)
+        # print("Response to login form",log_request)
         # return HttpResponse(response,content_type='application/json')
         return HttpResponse(response)
     
     else:
-        print("call from login Info component")
+        start_date = request.GET.get('start_date')
+        end_date = request.GET.get('end_date')
         log_servise=login_info_service()
-        response=log_servise.get_log_entries()  
+        response=log_servise.get_log_entries(start_date,end_date)  
         print("Response to login info form",response) 
         return HttpResponse(response,content_type='application/json')
     

@@ -28,9 +28,10 @@ def insert_homeadmission(request):
         return HttpResponse(response.get(),content_type='application/json')
     
     else:
-        # print("call from home admission component ")
+        start_date = request.GET.get('start_date')
+        end_date = request.GET.get('end_date')
         service=home_admission_service()
-        response= service.get_home_admission_details()
+        response= service.get_home_admission_details(start_date, end_date)
         return HttpResponse(response,content_type='application/json')
         
         

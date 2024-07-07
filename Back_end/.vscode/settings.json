@@ -11,6 +11,8 @@
         "dutyoption",
         "homeadmission",
         "logininfocontroller",
+        "logininforequest",
+        "logininfoservice",
         "medicalservice",
         "medicalutlls",
         "nursedutycontroller",

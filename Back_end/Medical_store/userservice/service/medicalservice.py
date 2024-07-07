@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.http import HttpResponse
 from django.db.models import Q
 from django.contrib.auth.models import User
-import datetime
+from datetime import datetime, timedelta
 
 from userservice.data.response.userresponse import  response_home_admission ,ResponseHomeAdmission
 from userservice.data.request.userrequest import home_admission_request
@@ -95,10 +95,21 @@ class home_admission_service:
     
     
     #id used to get the details to the database
-    def get_home_admission_details(self):
+    def get_home_admission_details(self,start_date=None, end_date=None):
             
         condition = Q(status=1)
-        obj_list = home_admission.objects.filter(condition)
+        if start_date and end_date:
+            try:
+                start_date = datetime.strptime(start_date, '%Y-%m-%d')
+                end_date = datetime.strptime(end_date, '%Y-%m-%d') + timedelta(days=1)
+                condition &= Q(admission_date__range=(start_date, end_date))
+            except ValueError:
+                return JsonResponse({'error': 'Invalid date format. Use YYYY-MM-DD.'}, status=400)
+
+        obj_list = home_admission.objects.filter(condition).order_by('-admission_date')
+
+        if not start_date and not end_date:
+            obj_list = obj_list[:12]
         array_list = []
             
         for obj in obj_list:
@@ -124,7 +135,8 @@ class home_admission_service:
             response.set_note(obj.note)
             
             array_list.append(response.get())
-        # print(array_list)
+        print(array_list)
+        # return array_list
         return JsonResponse(array_list, safe=False)
 
         
@@ -135,47 +147,6 @@ class home_admission_service:
         response.set_id("CATEGORY DELETED "+str(id))
         print("SUCCESSFULLY CATEGORY DELETED")
         return response
-    
-    
-    # def get_home_admission_report(self, admission_date=None, discharge_date=None):
-    #     condition = Q(status=1)
-
-    #     if admission_date:
-    #         condition &= Q(admission_date=admission_date)
-
-    #     if discharge_date:
-    #         condition &= Q(discharge_date=discharge_date)
-
-    #     obj_list = home_admission.objects.filter(condition)
-    #     array_list = []
-
-    #     for obj in obj_list:
-    #         response = ResponseHomeAdmission()
-    #         response.set_id(obj.id)
-    #         response.set_disease(obj.disease)
-    #         response.set_person_details_id(obj.person_details_id)
-    #         person = person_details.objects.get(id=obj.person_details_id)
-    #         response.person_first_name = person.first_name
-    #         response.person_last_name = person.last_name
-    #         response.person_district = person.district
-    #         response.person_gender = person.gender
-
-    #         if admission_date:
-    #             response.set_admission_date(str(obj.admission_date))
-    #             response.set_admission_related_details(
-    #                 disease=obj.disease,
-    #                 admission_date=str(obj.admission_date)
-    #             )
-    #         if discharge_date:
-    #             response.set_discharge_date(str(obj.discharge_date))
-    #             response.set_discharge_related_details(
-    #                 disease=obj.disease,
-    #                 discharge_date=str(obj.discharge_date)
-    #             )
-
-    #         array_list.append(response.get())
-
-    #     return JsonResponse(array_list, safe=False)
     
     
     
