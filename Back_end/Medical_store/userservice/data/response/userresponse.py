@@ -23,6 +23,8 @@ class response_home_admission:
     discharge_reason=None
     note=None
     status=None
+    person_details_first_name = None
+    person_details_last_name = None
 
     def get(self):
         return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
@@ -32,7 +34,12 @@ class response_home_admission:
 
     def set_person_details_id(self, person_details_id):
         self.person_details_id=person_details_id
+        
+    def set_person_details_first_name(self, first_name):
+        self.person_details_first_name = first_name
 
+    def set_person_details_last_name(self, last_name):
+        self.person_details_last_name = last_name
     def set_if_new(self, if_new):
         self.if_new=if_new
 

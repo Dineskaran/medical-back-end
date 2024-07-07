@@ -66,7 +66,7 @@ class dropdown_service:
         array=[]
         
         for obj in distinctList:
-          
+        
             response = dropdown_response()
             response.set_list_type(obj['list_type'])
             print("response obj obj" , response)

@@ -10,7 +10,7 @@ from django.db.models import Count
 
 from userservice.data.response.nurseresponse import nurse_duty_response,dutyCountResponse,nurse_duty_report_response
 from userservice.data.request.nurserequest import nurse_duty_request
-from userservice.models import nurse_duty
+from userservice.models import nurse_duty,person_details
 
 class nurse_duty_service:
     
@@ -60,9 +60,9 @@ class nurse_duty_service:
     
     
     def get_nurse_duty(self):
-        condition=Q(status=1)
-        obj_list = nurse_duty.objects.filter(condition)
-        array_list=[]
+        condition = Q(status=1)
+        obj_list = nurse_duty.objects.filter(condition).select_related('person_details')
+        array_list = []
         
         for obj in obj_list:
             response = nurse_duty_response()
@@ -70,6 +70,8 @@ class nurse_duty_service:
             response.set_date(str(obj.date))
             response.set_time(str(obj.time))
             response.set_person_details_id(obj.person_details_id)
+            response.set_person_details_first_name(obj.person_details.first_name)
+            response.set_person_details_last_name(obj.person_details.last_name)
             response.set_person_type(obj.person_type)
             response.set_duty_option(obj.duty_option)
             response.set_status(obj.status)

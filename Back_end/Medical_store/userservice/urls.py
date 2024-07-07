@@ -24,6 +24,7 @@ urlpatterns=[
     path('delete_prson_details',personcontroller.delete_person_details,name="delete_person_details"),
     
     path('insert_user_details',userdetailscontroller.insert_user,name="insert_user_details"),
+    path('check_userid',userdetailscontroller.check_userid,name="check_userid"),
     path('manage_user_details',userdetailscontroller.manage_user,name="delete_user_details"),
     path('change password',userdetailscontroller.change_password),
     path('login',userdetailscontroller.login),

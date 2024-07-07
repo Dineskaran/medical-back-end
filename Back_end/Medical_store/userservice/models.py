@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.hashers import make_password, check_password
 import datetime
-# from django.utils.timezone import datenow
+
 
 
 
@@ -155,12 +155,15 @@ class nurse_duty(models.Model):
 class user_details(models.Model):
     
     user_name=models.CharField(max_length=30,null=True)
-    userid=models.CharField(max_length=30,null=True)
+    userid=models.CharField(max_length=30,unique=True)
     password=models.CharField(max_length=255,null=True)
-    privilege=models.CharField(max_length=120,null=True)
-    create_date=models.DateTimeField(default=datetime.datetime.now())
-    create_by=models.CharField(max_length=15,null=True)
+    privilege=models.CharField(max_length=255,null=True)
+    create_by=models.CharField(max_length=100,null=True)
+    create_date= models.DateField(auto_now_add=True)
     status=models.IntegerField(default=1)
+    
+    def __str__(self):
+        return self.user_name
     
     class Meta:
         db_table="user_details"

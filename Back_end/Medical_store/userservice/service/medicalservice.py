@@ -83,6 +83,7 @@ class home_admission_service:
         response.set_toilet_managing(obj.toilet_managing)
         response.set_urine_managing(obj.urine_managing)
         response.set_work_in_uyirilai(obj.work_in_uyirilai)
+       
         # response.set_discharge_date(str(obj.discharge_date))
         # response.set_discharge_reason(obj.discharge_reason)
         response.set_note(obj.note)
@@ -106,6 +107,8 @@ class home_admission_service:
             response.set_disease(obj.disease)
             response.set_if_new(str(obj.if_new))
             response.set_person_details_id(obj.person_details_id)
+            response.set_person_details_first_name(obj.person_details.first_name)
+            response.set_person_details_last_name(obj.person_details.last_name)
             response.set_admission_date(str(obj.admission_date))
             response.set_room_no(obj.room_no)
             response.set_given_things(obj.given_things)
