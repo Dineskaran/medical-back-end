@@ -73,7 +73,7 @@ class nurse_duty_service:
         obj_list = nurse_duty.objects.filter(condition).select_related('person_details').order_by('-date', '-time')
 
         if not start_date_str and not end_date_str:
-            obj_list = obj_list[:12]
+            obj_list = obj_list[:10]
         array_list = []
         
         for obj in obj_list:

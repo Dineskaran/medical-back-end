@@ -22,10 +22,12 @@ def insert_user(request):
         else:
             return JsonResponse(response, status=200)  # Ensure status is integer
 
-    elif request.method == 'GET':
-        response = service.get_users()
+    else:
+        start_date = request.GET.get('start_date')
+        end_date = request.GET.get('end_date')
+        response = service.get_users(start_date,end_date)
         return HttpResponse(response, content_type='application/json')
-
+    
 @api_view(['GET'])
 @csrf_exempt
 def check_userid(request):

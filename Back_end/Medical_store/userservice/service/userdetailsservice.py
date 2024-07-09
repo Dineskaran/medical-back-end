@@ -1,4 +1,5 @@
 import re
+from datetime import datetime, timedelta
 from django.contrib.auth.hashers import make_password, check_password
 from django.http import JsonResponse, HttpResponse
 from userservice.data.response.userdetailsresponse import user_details_response
@@ -6,6 +7,7 @@ from userservice.data.request.userdetailsrequest import user_details_request
 from userservice.models import user_details
 from rest_framework import status
 from django.db.utils import IntegrityError
+from django.db.models import Q
 
 
 class user_details_service:
@@ -86,11 +88,24 @@ class user_details_service:
         except Exception as e:
             return {"status": 500, "error": str(e)}
         
-    def get_users(self):
+    def get_users(self, start_date=None, end_date=None):
+        condition = Q(status=1)
         try:
-            condition = user_details.objects.filter(status=1)
+            if start_date and end_date:
+                try:
+                    start_date = datetime.strptime(start_date, '%Y-%m-%d')
+                    end_date = datetime.strptime(end_date, '%Y-%m-%d') 
+                    condition &= Q(create_date__range=(start_date, end_date))
+                except ValueError:
+                    return JsonResponse({'error': 'Invalid date format. Use YYYY-MM-DD.'}, safe=False)
+
+            users_query = user_details.objects.filter(condition).order_by('-create_date')
+            
+            if not (start_date and end_date):
+                users_query = users_query[:10]  # Limit to the latest 10 if no date range is provided
+
             array_list = []
-            for user_obj in condition:
+            for user_obj in users_query:
                 response = user_details_response()
                 response.set_id(user_obj.id)
                 response.set_userid(user_obj.userid)
@@ -102,13 +117,21 @@ class user_details_service:
             return JsonResponse(array_list, safe=False)
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500, safe=False)
-
+        
+        
+        
+        
+        
+        
     def delete_user(self, id):
         try:
             user_details.objects.filter(id=id).update(status=0)
             return JsonResponse({"message": f"userid :{id} Successfully Deleted"}, safe=False)
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500, safe=False)
+        
+        
+        
 
     def change_password(self, userid, old_password, new_password):
         try:
